@@ -11,15 +11,19 @@ import (
 
 func main() {
 	router := gin.Default()
+	errProxies := router.SetTrustedProxies(nil)
+	if errProxies != nil {
+		return
+	}
 
-	// Route declaration
+	// Routes declaration
 	router.GET("/status/:id", status.Status)
 	router.GET("/refresh/:id", refresh.Refresh)
 	router.GET("/deploy/:id", deploy.Deploy)
 	router.GET("/stop/:id", stop.Stop)
 
-	err := router.Run()
-	if err != nil {
+	errRun := router.Run()
+	if errRun != nil {
 		return
 	}
 }
